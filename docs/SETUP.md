@@ -1,5 +1,38 @@
 # Local PostgreSQL and authentication setup
 
+## Automated local setup on Windows
+
+Install and start [Docker Desktop](https://docs.docker.com/desktop/setup/install/windows-install/),
+then run this in your own Windows terminal:
+
+```powershell
+& "D:\Coolearn\adaptive-learning\scripts\setup-local.cmd"
+```
+
+The helper uses the existing compose service, schema, migrations, package versions,
+and test suites. It creates .env.local only if absent, with random database/auth
+secrets and dedicated local _dev/_test database settings. It never overwrites an
+existing environment file or prints passwords. It rejects production NODE_ENV,
+remote databases, placeholders, and mismatched Docker/connection settings. No
+database is dropped or reset, and no development course or user is seeded.
+
+It starts PostgreSQL, installs root/test packages, validates/generates Prisma,
+applies the current migration to development and test databases, runs lint/typecheck,
+policy/unit/database tests, installs Chromium, and runs real authentication browser
+tests. The existing browser configuration also builds the production application.
+Any failing command stops setup; passing file checks alone are not authentication
+verification. The generated files do not add Phase 02 learning features.
+
+For your own already-running local PostgreSQL, configure .env.local as described
+below and use `scripts\setup-local.cmd --existing-postgres`. The database role needs
+permission to create the separate _test database; existing databases are preserved.
+No SQLite or simulated auth fallback is used. Run `scripts\setup-local.cmd --check`
+for read-only prerequisite file checks without downloads or changes.
+
+This sandbox can validate helper syntax and guards, but cannot run its download/
+Docker/migration/browser path. Send the actual terminal results back before treating
+Phase 01 as verified and proceeding with Phase 02.
+
 ## 1. Install the dependencies
 
 Use Node.js >=22.12 and npm, from D:\Coolearn\adaptive-learning:

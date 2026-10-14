@@ -12,6 +12,10 @@ root lockfile before using `npm.cmd ci`. See [verification](docs/VERIFICATION.md
 
 ## Run locally
 
+To finish the blocked database/authentication setup on Windows, install and start
+Docker Desktop, then run `scripts\setup-local.cmd` in your own terminal. It preserves
+existing configuration and runs the existing Phase 01 checks; see docs/SETUP.md.
+
 Requires Node.js >=22.12.0 and npm. From this directory:
 
 ```powershell

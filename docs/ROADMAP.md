@@ -8,7 +8,7 @@ explicit prerequisite that essential Phase 01 functionality be verified and repa
 | --- | --- | --- |
 | 00 — Foundation | Next.js, TypeScript, Tailwind, shadcn/ui, landing, architecture/docs/testing scaffold | Delivered; historical verification in VERIFICATION.md |
 | 01 — Database and authentication | Domain models, PostgreSQL/Prisma migration/seeds, credentials, sessions, roles/ownership, dashboard shells | Source written; lint and 13 policy tests pass; dependency install and live verification blocked |
-| 02 — Learning resources | Course management/publishing, ordered modules/lessons, lecture player/resources, persisted resume and explicit completion | Authorized; implementation blocked by unmet Phase 01 prerequisites confirmed during preflight |
+| 02 — Learning resources | Course management/publishing, ordered modules/lessons, lecture player/resources, persisted resume and explicit completion | Authorized; prerequisite recheck still finds missing packages/configuration/database. Local setup helper prepared; features not started |
 | 03 — Assessment and mastery | Quizzes, feedback, concept mastery | Not authorized |
 | 04 — Recommendations and AI | Deterministic recommendations, evaluated OpenAI assistance | Not authorized |
 | 05 — Education integrations | Authorized Classroom and Teams imports | Not authorized |

@@ -1,5 +1,36 @@
 # Verification — 2026-10-14
 
+## Renewed Phase 02 request: prerequisite repair
+
+Read the rules/documentation and inspected the existing schema, package manifest,
+session layer, ownership/enrollment services, and project structure. Git working
+tree was clean before this task. Prisma, Better Auth, pg, generated client, .env.local,
+and Vitest remain absent; no Docker or psql command is available. The managed
+session still has CODEX_SANDBOX_NETWORK_DISABLED=1.
+
+Prepared scripts/setup-local.cmd and scripts/setup-local.mjs to perform setup using
+the existing architecture in the user's network-enabled terminal. Updated README,
+SETUP, ARCHITECTURE, ROADMAP, and this verification document. No Phase 02 feature
+code, course/player/progress schema, or mathematics seed was added before prerequisite
+verification. The user requested working Phase 01 first; that condition is unmet.
+
+Actual helper/check results:
+
+- Node syntax check passed for setup-local.mjs.
+- Read-only --check reported all six prerequisite file checks false and exited 1.
+- Normal setup correctly refused the restricted session with an explicit message;
+  no secret/configuration file was created and no database/package changes occurred.
+- ESLint passed with zero warnings; 13 policy tests passed, 0 failed, 0 skipped.
+- db:migrate remains blocked at the missing prisma executable.
+- Typecheck/build remain blocked by missing modules/client/Prisma, as recorded below.
+- Docker startup, generated secrets, real package installation, migration execution,
+  and live auth/browser checks through the helper are unverified here. Do not report
+  them as successful until the user's actual terminal output proves they ran.
+
+Next action: follow the automated Windows setup instructions in SETUP.md and provide
+the terminal outcome. Repair any real Phase 01 failures, then implement Phase 02.
+No Phase 03 work has been performed.
+
 ## LearNova branding update
 
 Renamed visible branding, site metadata, auth app name, package names, product/docs

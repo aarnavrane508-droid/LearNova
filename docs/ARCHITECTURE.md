@@ -4,7 +4,9 @@
 
 Phase 00 established the Next.js foundation. Phase 01 adds PostgreSQL and
 authentication source. Live verification is blocked; this is not a production-ready
-release. Phase 02, quizzes, mastery, AI, and LMS imports are not authorized.
+release. Phase 02 course/player/progress work is authorized, but the user requires
+essential Phase 01 verification first. Quizzes, mastery, AI, and LMS imports remain
+outside the authorized scope.
 
 Application routes remain in src/app. Shared UI and layout stay in src/components.
 The landing feature remains public. src/features/auth contains forms, the client,
