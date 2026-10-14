@@ -37,6 +37,16 @@ repository write permission before attempting a non-force push with CLI credenti
 Its restricted-session guard was exercised successfully; network login and actual
 publishing cannot be tested in this sandbox and are not reported as successful.
 
+Push-helper follow-up: the user's screenshot showed only the generic failure line.
+Inspection found .git owned by CodexSandboxOffline while the project folder is owned
+by hp. The initial helper suppressed Git's repository error. It now applies a
+command-scoped safe.directory exception for the resolved project only, leaves global
+settings unchanged, displays diagnostics, and provides --check-local for offline
+verification. This does not remove the managed network restriction.
+The local check passed on the real clean repository. A scoped invalid-GIT_DIR
+failure probe returned exit 1 and displayed both Git's cause and the helper's
+repository failure message. Neither check called authentication or attempted a push.
+
 ## Phase 01: current results
 
 Phase 01 source is written but **not fully verified**. Historical Phase 00 successes

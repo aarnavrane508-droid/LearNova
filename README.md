@@ -66,6 +66,9 @@ guides GitHub login when needed, checks the exact aarnavrane508-droid account an
 repository write access, then pushes main using only GitHub CLI credentials. It
 does not use the connected tre1eg plugin or change global Git settings. The helper
 refuses to run inside a session marked CODEX_SANDBOX_NETWORK_DISABLED=1.
+It scopes safe.directory to the resolved project for its own commands because the
+repository was created by the sandbox's Windows account. Run it with --check-local
+to inspect the local repository without authenticating or attempting a push.
 
 ## Project documentation
 
