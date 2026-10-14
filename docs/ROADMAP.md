@@ -1,26 +1,26 @@
 # Development roadmap
 
-Each phase requires explicit user approval before implementation. Descriptions
-below are planning, not authorization. Only Phase 1 is currently authorized.
+The user's phase numbering is authoritative: Phase 00 is the completed foundation;
+Phase 01 is database/authentication. Phase 02 is now authorized, with the user's
+explicit prerequisite that essential Phase 01 functionality be verified and repaired first.
 
-| Phase | Scope | Exit criteria |
+| Phase | Scope | Status |
 | --- | --- | --- |
-| 1 — Foundation | Next.js, TypeScript, Tailwind, shadcn/ui setup, modular folders, public landing page, docs, environment template, testing scaffold | Installable app, clean lint/type checks, production build and HTTP checks; browser/unit tests run or blockers clearly documented |
-| 2 — Identity and persistence | Approve student data model; PostgreSQL/Prisma setup and migrations; published Auth.js compatibility check; student accounts and secure sessions | Sign-in/sign-out, session expiry, ownership enforcement, migration and auth tests |
-| 3 — Learning resources | Courses, lecture and reading resources, progress records, resume/completion behavior | Authorized resource access and durable progress tested end-to-end |
-| 4 — Assessments and mastery | Concept taxonomy, quizzes, attempt scoring, feedback, evidence-based mastery | Scoring and mastery rules documented and tested; reliable student overview |
-| 5 — Recommendations and AI | Deterministic next-step engine, explanation of recommendations, evaluated OpenAI assistance | Baseline evaluation, useful recommendations, provider error handling, privacy and cost controls |
-| 6 — Education integrations | Authorized Google Classroom and Microsoft Teams for Education imports | Verified official APIs, approved scopes, consent/revocation, import deduplication and failure recovery |
-| 7 — Pilot and operations | Student feedback, accessibility review, deployment, monitoring and reliability | Pilot readiness and operational runbook reviewed |
+| 00 — Foundation | Next.js, TypeScript, Tailwind, shadcn/ui, landing, architecture/docs/testing scaffold | Delivered; historical verification in VERIFICATION.md |
+| 01 — Database and authentication | Domain models, PostgreSQL/Prisma migration/seeds, credentials, sessions, roles/ownership, dashboard shells | Source written; lint and 13 policy tests pass; dependency install and live verification blocked |
+| 02 — Learning resources | Course management/publishing, ordered modules/lessons, lecture player/resources, persisted resume and explicit completion | Authorized; implementation blocked by unmet Phase 01 prerequisites confirmed during preflight |
+| 03 — Assessment and mastery | Quizzes, feedback, concept mastery | Not authorized |
+| 04 — Recommendations and AI | Deterministic recommendations, evaluated OpenAI assistance | Not authorized |
+| 05 — Education integrations | Authorized Classroom and Teams imports | Not authorized |
+| 06 — Pilot and operations | Accessibility, verification/recovery, deployment, monitoring, feedback | Not authorized |
 
-## Next proposed phase
+Before calling Phase 01 verified, install dependencies and synchronize lockfiles,
+validate/generate Prisma, apply the checked-in migration on PostgreSQL, and run the
+guarded development seed. Run typecheck/build and live database/authentication tests
+against the dedicated test database. Fix failures and record exact outcomes.
 
-Phase 2: agree on student/account ownership and the first persistence model, then
-verify the published Auth.js and Prisma versions before installing them. Design
-and implement authentication and the database only after approval. Do not move
-into resource delivery, quizzes, or AI as part of Phase 2.
-
-## Outstanding foundation verification
-
-See docs/VERIFICATION.md for actual commands, results, and environment restrictions.
-Resolve outstanding foundation checks before considering Phase 1 fully verified.
+Public production readiness also needs an email ownership/recovery policy and
+trusted-proxy configuration. These documented limitations are not permission to
+skip prerequisite verification. Phase 02 has not been implemented. After resolving
+Phase 01 checks, reuse the existing schema, services, authentication, and UI rather
+than replacing them. Stop and wait for explicit approval before Phase 03.

@@ -34,10 +34,24 @@ permissions, explicit consent, ownership checks, revocation, and failure handlin
 Authentication through Google or Microsoft alone does not grant permission to
 import classroom content. These integrations are outside the initial MVP foundation.
 
-## Phase 1 delivered scope
+## Phase 00 delivered scope
 
 Only the application foundation, public landing page, reusable UI basics,
 configuration, testing scaffold, and product/architecture/roadmap documentation.
 The landing illustration is static sample content. It does not track learning or
-offer a working course. No authentication, database, quiz, AI, or integration
-implementation is authorized in this phase.
+offer a working course.
+
+## Phase 01 — database and authentication
+
+The user explicitly authorized the domain database, student/teacher registration,
+login/logout, sessions, ownership/roles, protected dashboard shells, migrations,
+development seeds, and boundary tests. That source is written. Dependency
+installation and live PostgreSQL/authentication/browser verification are blocked;
+this is not a verified production release. Public users cannot select ADMIN, view
+another private profile, manage another teacher's course, or enroll another student
+through the application APIs.
+
+Teacher self-registration is an account choice, not educator certification. Email
+ownership verification and password recovery are not yet provided. Dashboard shells
+do not invent progress or mastery. No quizzes, AI, adaptive learning, LMS integration,
+or Phase 02 learning delivery has been implemented.

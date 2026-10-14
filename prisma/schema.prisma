@@ -1,0 +1,190 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  STUDENT
+  TEACHER
+  ADMIN
+}
+
+enum CourseStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum LessonKind {
+  READING
+  VIDEO
+}
+
+model User {
+  id            String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name          String
+  email         String       @unique
+  emailVerified Boolean      @default(false)
+  image         String?
+  role          Role         @default(STUDENT)
+  // Signup intent is distinct from the server-owned authorization role.
+  accountType   String       @default("STUDENT")
+  createdAt     DateTime     @default(now()) @db.Timestamptz(3)
+  updatedAt     DateTime     @updatedAt @db.Timestamptz(3)
+  profile       Profile?
+  courses       Course[]     @relation("CourseOwner")
+  enrollments   Enrollment[]
+  sessions      Session[]
+  accounts      Account[]
+
+  @@index([role])
+}
+
+model Profile {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String   @unique @db.Uuid
+  bio       String?  @db.VarChar(1000)
+  timezone  String   @default("UTC") @db.VarChar(100)
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Course {
+  id          String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  ownerId     String       @db.Uuid
+  slug        String       @unique @db.VarChar(160)
+  title       String       @db.VarChar(200)
+  description String?      @db.VarChar(4000)
+  status      CourseStatus @default(DRAFT)
+  createdAt   DateTime     @default(now()) @db.Timestamptz(3)
+  updatedAt   DateTime     @updatedAt @db.Timestamptz(3)
+  owner       User         @relation("CourseOwner", fields: [ownerId], references: [id], onDelete: Restrict)
+  enrollments Enrollment[]
+  modules     Module[]
+
+  @@index([ownerId, status])
+  @@index([status, createdAt])
+}
+
+model Enrollment {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  studentId  String   @db.Uuid
+  courseId   String   @db.Uuid
+  enrolledAt DateTime @default(now()) @db.Timestamptz(3)
+  createdAt  DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt  DateTime @updatedAt @db.Timestamptz(3)
+  student    User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  course     Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([studentId, courseId])
+  @@index([courseId, createdAt])
+}
+
+model Module {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  courseId  String   @db.Uuid
+  title     String   @db.VarChar(200)
+  position  Int
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  lessons   Lesson[]
+
+  @@unique([courseId, position])
+}
+
+model Lesson {
+  id        String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  moduleId  String          @db.Uuid
+  title     String          @db.VarChar(200)
+  position  Int
+  kind      LessonKind      @default(READING)
+  createdAt DateTime        @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime        @updatedAt @db.Timestamptz(3)
+  module    Module          @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  concepts  LessonConcept[]
+
+  @@unique([moduleId, position])
+}
+
+model Concept {
+  id          String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  slug        String          @unique @db.VarChar(160)
+  name        String          @db.VarChar(200)
+  description String?         @db.VarChar(2000)
+  createdAt   DateTime        @default(now()) @db.Timestamptz(3)
+  updatedAt   DateTime        @updatedAt @db.Timestamptz(3)
+  lessons     LessonConcept[]
+}
+
+model LessonConcept {
+  lessonId  String   @db.Uuid
+  conceptId String   @db.Uuid
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+  lesson    Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  concept   Concept  @relation(fields: [conceptId], references: [id], onDelete: Restrict)
+
+  @@id([lessonId, conceptId])
+  @@index([conceptId])
+}
+
+// Better Auth's persisted credentials and revocable sessions.
+model Session {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  token     String   @unique
+  userId    String   @db.Uuid
+  expiresAt DateTime @db.Timestamptz(3)
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model Account {
+  id                     String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  accountId              String
+  providerId             String
+  userId                 String    @db.Uuid
+  password               String?
+  accessToken            String?
+  refreshToken           String?
+  idToken                String?
+  accessTokenExpiresAt   DateTime? @db.Timestamptz(3)
+  refreshTokenExpiresAt  DateTime? @db.Timestamptz(3)
+  scope                  String?
+  createdAt              DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt              DateTime  @updatedAt @db.Timestamptz(3)
+  user                   User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([providerId, accountId])
+  @@index([userId])
+}
+
+model Verification {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  identifier String
+  value      String
+  expiresAt  DateTime @db.Timestamptz(3)
+  createdAt  DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt  DateTime @updatedAt @db.Timestamptz(3)
+
+  @@index([identifier])
+  @@index([expiresAt])
+}
+
+model RateLimit {
+  id          String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  key         String @unique
+  count       Int
+  lastRequest BigInt
+}

@@ -1,4 +1,5 @@
 import { ArrowUpRight, Menu } from "lucide-react";
+import Link from "next/link";
 import { Brand } from "@/components/layout/brand";
 import { buttonVariants } from "@/components/ui/button";
 import { site } from "@/config/site";
@@ -13,10 +14,10 @@ export function SiteHeader() {
         {site.navigation.map((item) => <a key={item.href} href={item.href} className="text-sm text-muted-foreground transition-colors hover:text-foreground">{item.label}</a>)}
       </nav>
 
-      <a href="#roadmap" className={buttonVariants({ variant: "outline", size: "sm" })}>
-        See what’s next
+      <Link href="/login" className={buttonVariants({ variant: "outline", size: "sm" })}>
+        Log in
         <ArrowUpRight aria-hidden="true" />
-      </a>
+      </Link>
 
       <details className="relative md:hidden">
 

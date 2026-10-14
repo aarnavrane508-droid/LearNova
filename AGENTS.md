@@ -2,10 +2,13 @@
 
 ## Scope and approval
 
-The active phase is Phase 1: foundation only. Do not implement authentication,
-database models, lectures, quizzes, mastery scoring, AI, or integrations until the
-user explicitly approves the corresponding phase. Documentation of future work
-is allowed. Do not interpret roadmap items as authorization to implement them.
+The user has approved Phase 02: course management, lecture playback, resources,
+and persisted learning progress. First verify and repair essential Phase 01 database,
+authentication, and authorization functionality before implementing Phase 02.
+The current workspace lacks required packages and a running PostgreSQL database;
+resolve those prerequisites rather than treating Phase 01 as successfully verified.
+Do not implement quizzes, mastery scoring, AI, external integrations, or Phase 03
+without new approval. Roadmap items alone are not implementation authorization.
 
 ## Before editing
 

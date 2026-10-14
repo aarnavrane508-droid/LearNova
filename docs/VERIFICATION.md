@@ -1,4 +1,70 @@
-# Foundation verification — 2026-10-14
+# Verification — 2026-10-14
+
+## Phase 02 prerequisite review
+
+The user authorized Phase 02 and required verification of essential Phase 01
+functionality before implementing it. The current files, schema, auth/services,
+package manifest, and documentation were inspected. Phase 01 is not operational
+in this workspace; Phase 02 source changes were not started.
+
+Fresh checks returned:
+
+- npm install: EACCES fetching @prisma/adapter-pg; required packages remain absent.
+- PostgreSQL: no psql/docker executable; connection to 127.0.0.1:5432 ECONNREFUSED.
+- .env.local and generated Prisma client: absent.
+- db:migrate: blocked because the prisma executable is missing; no migration applied.
+- typecheck: failed with missing Prisma/Better Auth/dotenv modules and generated
+  client, plus resulting implicit parameter type errors.
+- build: blocked at prisma generate.
+- test:policies: 13 tests passed, 0 failed, 0 skipped. These do not prove live auth.
+- lint: passed, zero warnings.
+
+Use SETUP.md to install dependencies in a network-enabled terminal, configure
+PostgreSQL/authentication, generate the client, apply migrations, and run real
+authentication/relationship tests. Then resume Phase 02. No completion, playback,
+watch-time, or mastery capability is claimed from the current checks.
+
+The user also authorized pushing current source to aarnavrane508-droid/LearNova.
+The connector still identifies tre1eg with no write access and was not used for
+writes. Local CLI configuration identifies aarnavrane508-droid but its auth check
+fails. The push was attempted using only the local CLI credentials and failed:
+Git could not connect to github.com:443. No source was published. The changes are
+committed locally; tre1eg was not used for writes.
+
+## Phase 01: current results
+
+Phase 01 source is written but **not fully verified**. Historical Phase 00 successes
+below do not establish that the new build/authentication works.
+
+| Command / probe | Actual result |
+| --- | --- |
+| `npm run test:policies` | PASS: 13 tests, 13 passed, 0 failed, 0 skipped; public roles, profile isolation, teacher ownership, enrollment rules, dashboard routing |
+| `npm run lint` | PASS after fixing two reserved-variable lint errors in seed/database-test code |
+| `git diff --check` | PASS |
+| `npm run smoke` against the existing development server | PASS: homepage/CSS 200, unknown route 404, expected content and section targets present; this verifies the public page only |
+| `npm install --fetch-retries=0 --fetch-timeout=5000` | FAIL: EACCES fetching @prisma/adapter-pg from registry.npmjs.org; outbound network is disabled |
+| `npm run typecheck` | FAIL: Prisma/Better Auth/dotenv imports and generated client are absent; related implicit parameter errors remain; no fake declarations added |
+| `npm run db:validate` | BLOCKED: prisma executable unavailable |
+| `npm run db:migrate` | BLOCKED: prisma executable unavailable; migration NOT applied |
+| `npm run db:seed` | BLOCKED: prisma executable unavailable; seed NOT run |
+| `npm run build` | BLOCKED at prisma generate; no Phase 01 production build completed |
+| `npm test` | BLOCKED: vitest executable unavailable |
+| `npm run test:install -- --offline` | FAIL: ENOTCACHED for vitest; previous package-download blocker remains |
+| `npm run test:db` | BLOCKED: vitest unavailable; no real relationship tests ran |
+| `npm run test:e2e` | BLOCKED: playwright unavailable; no live authentication/browser tests ran |
+| PostgreSQL probe | No psql/docker command, PostgreSQL service, or C:\Program Files\PostgreSQL installation found; 127.0.0.1:5432 returns ECONNREFUSED |
+
+Root package-lock.json still covers Phase 00; npm install must synchronize it before
+npm ci. Test tooling has no lockfile. Prisma generation is pending. Initial SQL is
+manually authored and unexecuted; schema/SQL agreement and trigger execution need
+live validation. No fake database/authentication or database fallback was added.
+
+Policy tests prove only pure decisions, not library configuration, hashing/session
+behavior, PostgreSQL triggers, route integration, or browser behavior. Those tests
+are saved in tests/integration and tests/e2e with local-test-DB safeguards. See
+docs/SETUP.md for the completion sequence. No later phase has been started.
+
+## Phase 00: historical foundation results
 
 ## Passed
 
