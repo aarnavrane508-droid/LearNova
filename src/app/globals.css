@@ -1,0 +1,75 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --background: #faf9f6;
+  --foreground: #223d34;
+  --card: #ffffff;
+  --card-foreground: #223d34;
+  --popover: #ffffff;
+  --popover-foreground: #223d34;
+  --primary: #244f40;
+  --primary-foreground: #ffffff;
+  --secondary: #efefe6;
+  --secondary-foreground: #223d34;
+  --muted: #eeeee8;
+  --muted-foreground: #5d6860;
+  --accent: #e3edc9;
+  --accent-foreground: #244f40;
+  --destructive: #b83c32;
+  --border: #dddfd5;
+  --input: #dddfd5;
+  --ring: #527d41;
+  --radius: 1rem;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --font-sans: Arial, Helvetica, sans-serif;
+  --font-display: Georgia, "Times New Roman", serif;
+}
+
+@layer base {
+  * { @apply border-border; }
+  html { scroll-behavior: smooth; scroll-padding-top: 2rem; }
+  body { @apply bg-background font-sans text-foreground antialiased; }
+  ::selection { background: #dce9bf; }
+  a, button, summary { -webkit-tap-highlight-color: transparent; }
+  a:focus-visible, summary:focus-visible { outline: 2px solid var(--ring); outline-offset: 6px; }
+  button:not(:disabled), summary { cursor: pointer; }
+  section[id] { scroll-margin-top: 2rem; }
+}
+
+@layer components {
+  .container-shell { @apply mx-auto w-full max-w-6xl px-6 sm:px-10; }
+  .eyebrow { @apply text-xs font-semibold uppercase tracking-[0.18em]; }
+  .section-title { @apply font-display text-4xl leading-tight tracking-tight md:text-5xl; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}

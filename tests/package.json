@@ -1,0 +1,16 @@
+{
+  "name": "coolearn-tests",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest run --config vitest.config.ts",
+    "test:watch": "vitest --config vitest.config.ts",
+    "test:e2e": "playwright test --config playwright.config.ts",
+    "browsers:install": "playwright install chromium"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.61.1",
+    "vitest": "4.0.18"
+  }
+}
