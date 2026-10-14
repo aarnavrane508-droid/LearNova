@@ -1,4 +1,4 @@
-# Coolearn project rules
+# LearNova project rules
 
 ## Scope and approval
 

@@ -4,7 +4,7 @@ test("landing page describes the phase and supports section navigation", async (
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto("/");
-  await expect(page).toHaveTitle(/Coolearn/);
+  await expect(page).toHaveTitle(/LearNova/);
   await expect(page.getByRole("heading", { level: 1 })).toContainText("Your pace.");
   await expect(page.getByText("A new way to grow · In development")).toBeVisible();
   await page.getByRole("link", { name: "Explore the vision" }).click();

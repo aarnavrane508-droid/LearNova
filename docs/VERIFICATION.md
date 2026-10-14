@@ -1,5 +1,15 @@
 # Verification — 2026-10-14
 
+## LearNova branding update
+
+Renamed visible branding, site metadata, auth app name, package names, product/docs
+headings, and branding expectations in existing smoke/browser checks to LearNova.
+Local filesystem paths and existing PostgreSQL configuration names are preserved.
+ESLint passed. After restarting the development server, HTTP smoke passed:
+homepage/CSS 200, unknown route 404, expected sections/content present. The rendered
+title is "LearNova — Learn at your own pace" and the homepage contains no old
+Coolearn branding. Authentication pages remain unverified due to missing packages.
+
 ## Phase 02 prerequisite review
 
 The user authorized Phase 02 and required verification of essential Phase 01

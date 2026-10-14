@@ -22,7 +22,7 @@ function createAuth() {
   }
 
   return betterAuth({
-    appName: "Coolearn",
+    appName: "LearNova",
     secret,
     baseURL: origin,
     trustedOrigins: [origin],

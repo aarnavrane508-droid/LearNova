@@ -84,7 +84,7 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
         {!pending && <ArrowRight aria-hidden="true" />}
       </Button>
       <p className="text-center text-sm text-muted-foreground">
-        {registering ? "Already have an account? " : "New to Coolearn? "}
+        {registering ? "Already have an account? " : "New to LearNova? "}
         <Link href={registering ? "/login" : "/register"} className="font-medium text-primary underline underline-offset-4">{registering ? "Log in" : "Create an account"}</Link>
       </p>
     </form>

@@ -2,7 +2,7 @@ import { Button as ButtonPrimitive } from "@base-ui/react/button";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
-// Locally owned shadcn/ui Base UI button, styled for Coolearn.
+// Locally owned shadcn/ui Base UI button, styled for LearNova.
 export const buttonVariants=cva(
   "inline-flex shrink-0 items-center justify-center gap-2 rounded-full text-sm font-semibold transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 disabled:pointer-events-none disabled:opacity-50 [&_svg]:size-4",
   {

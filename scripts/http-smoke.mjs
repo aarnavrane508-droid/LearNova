@@ -10,7 +10,7 @@ async function main() {
   const missing = await fetch(new URL("/missing-page", baseUrl));
   const checks = {
     homeStatus: home.status,
-    title: html.includes("Coolearn"),
+    title: html.includes("LearNova"),
     hero: html.includes("Your pace."),
     developmentNotice: html.includes("In development"),
     sections: ["experience", "how-it-works", "roadmap"].every((id) => html.includes(`id="${id}"`)),

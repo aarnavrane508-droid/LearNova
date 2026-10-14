@@ -1,6 +1,6 @@
-# Coolearn product vision
+# LearNova product vision
 
-Coolearn is a planned AI-powered adaptive learning platform. Students will watch
+LearNova is a planned AI-powered adaptive learning platform. Students will watch
 lectures, read learning materials, practice with quizzes, and receive guidance
 based on progress, concept mastery, strengths, and weaknesses. The goal is a clear,
 supportive next step rather than a generic list of content.

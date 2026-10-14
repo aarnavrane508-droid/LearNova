@@ -59,7 +59,7 @@ export function LearningPreview() {
 
       <div className="relative -mt-3 ml-6 flex items-center justify-between gap-3 rounded-xl border border-[#dce2cb] bg-[#f0f5e3] px-5 py-4 shadow-sm">
         <div>
-          <p className="text-xs font-semibold text-[#4e6939]">THE IDEA BEHIND COOLEARN</p>
+          <p className="text-xs font-semibold text-[#4e6939]">THE IDEA BEHIND LEARNOVA</p>
           <p className="mt-1 text-sm">A clearer path to your next step.</p>
         </div>
         <ArrowUpRight aria-hidden="true" className="size-5 shrink-0" />

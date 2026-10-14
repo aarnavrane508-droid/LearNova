@@ -12,7 +12,7 @@ export function RoadmapSection() {
           <br />
           thoughtful steps.
         </h2>
-        <p className="max-w-sm text-sm leading-7 text-muted-foreground">Coolearn is at the foundation stage. Here’s the path ahead, with each phase built and reviewed before the next.</p>
+        <p className="max-w-sm text-sm leading-7 text-muted-foreground">LearNova is at the foundation stage. Here’s the path ahead, with each phase built and reviewed before the next.</p>
       </div>
 
       <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{milestones.map((step, index) => <li key={step.number} className={`rounded-2xl border p-6 ${index===0? "border-[#becda1] bg-[#eef2e5]":"bg-background"}`}>
