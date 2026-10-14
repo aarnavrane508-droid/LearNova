@@ -1,5 +1,47 @@
 # Verification — 2026-10-14
 
+## Phase 03 preflight — 2026-10-15
+
+Read AGENTS.md and all six documentation files, inspected the actual Prisma schema,
+authentication/session code, course services, dashboard routes, and source/test
+inventory. No Phase 02 lecture player or progress implementation exists locally.
+`git fetch origin` succeeded; inspection of `origin/main` also found no Phase 02
+implementation. No remote changes were merged and no push was performed.
+
+The new request authorizes Phase 03 assessments only and requires Phase 02
+verification before coding. That prerequisite cannot pass against this source.
+Requested the location of completed Phase 02 work or a scope change to complete
+the missing prerequisites. Assessment models, migrations, and UI have not been
+implemented; the proposed plan is recorded in ROADMAP.md.
+
+Fresh environment checks:
+
+- The sandbox terminal fails before starting commands with `helper_unknown_error:
+  setup refresh had errors`; approved outside-sandbox inspection works.
+- `node scripts/setup-local.mjs --check`: exit 1; all six checks false (Prisma,
+  Better Auth, PostgreSQL driver, generated client, environment file, test runner).
+- No `docker` or `psql` command and no PostgreSQL service were found.
+- TCP probe of `127.0.0.1:5432`: exit 1, `ECONNREFUSED`.
+- Git working tree was clean at the start. Only documentation is being updated.
+
+These findings do not establish working authentication, courses, or assessments.
+
+Baseline commands executed during this preflight:
+
+| Command | Actual result |
+| --- | --- |
+| `npm.cmd run check` | Exit 1: ESLint passed with zero warnings; TypeScript reported 18 errors from missing dotenv/Prisma/Better Auth/generated client imports and resulting implicit parameter types |
+| `npm.cmd run test:policies` | Exit 0: 13 passed, 0 failed, 0 skipped |
+| `npm.cmd test` | Exit 1: vitest executable unavailable; no unit tests executed |
+| `npm.cmd run test:db` | Exit 1: vitest executable unavailable; no integration tests executed |
+| `npm.cmd run build` | Exit 1: prisma executable unavailable; Next production build did not start |
+| `npm.cmd run test:e2e` | Exit 1: playwright executable unavailable; no browser tests executed |
+
+Dependency installation, database migration/seed execution, and new assessment
+tests were not attempted in this preflight because the required Phase 02 source
+is missing and the current request limits implementation to Phase 03. Existing
+policy tests do not prove runtime authentication or assessment behavior.
+
 ## Renewed Phase 02 request: prerequisite repair
 
 Read the rules/documentation and inspected the existing schema, package manifest,
