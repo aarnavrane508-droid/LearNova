@@ -1,4 +1,4 @@
-# Coolearn
+# LearNova
 
 Foundation for an AI-powered adaptive learning platform. Phase 00 is the public
 landing page. Phase 01 adds PostgreSQL, Prisma, email/password authentication,
