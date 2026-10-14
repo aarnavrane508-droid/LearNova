@@ -6,7 +6,9 @@ import { getDb } from "@/server/db";
 import { AuthorizationError, assertRole, dashboardPath, type Role } from "@/features/auth/policy";
 
 export async function getCurrentUser() {
-  const session = await getAuth().api.getSession({ headers: await headers() });
+  // Establish request-time rendering before initializing secrets or database clients.
+  const requestHeaders = await headers();
+  const session = await getAuth().api.getSession({ headers: requestHeaders });
   if (!session) return null;
   // Re-read the current role and identity. Do not authorize from client/session claims.
   return getDb().user.findUnique({

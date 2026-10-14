@@ -17,6 +17,8 @@ export function DashboardShell({ user }: { user: DashboardUser }) {
           <p className="eyebrow mb-5 text-muted-foreground">{label} workspace</p>
           <Link href={dashboardPath(user.role)} aria-current="page" className="flex items-center gap-3 rounded-xl bg-secondary px-4 py-3 text-sm font-medium"><LayoutDashboard aria-hidden="true" className="size-4" />Overview</Link>
           <Link href="/" className="block rounded-xl px-4 py-3 text-sm text-muted-foreground">Public homepage</Link>
+          {user.role === "STUDENT" && <Link href="/dashboard/student/tutor" className="block rounded-xl px-4 py-3 text-sm text-muted-foreground">Local study tutor</Link>}
+          {user.role === "TEACHER" && <Link href="/dashboard/teacher/practice-drafts" className="block rounded-xl px-4 py-3 text-sm text-muted-foreground">AI practice drafts</Link>}
         </nav>
         <main className="min-w-0" id="dashboard-content">
           <p className="eyebrow mb-4 text-muted-foreground">{label} dashboard</p>

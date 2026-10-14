@@ -1,5 +1,42 @@
 # Development roadmap
 
+## Current Phase 05 — local AI
+
+The current request authorizes local Ollama/Qwen3 integration only, with no paid
+cloud API or automatic cloud fallback. Independent provider, authenticated
+concept-note tutoring and ephemeral teacher draft generation are implemented.
+The source still lacks the lesson player/progress, assessments and adaptive engine;
+this does not complete those earlier phases or their required integration flows.
+See LOCAL_AI.md and the newest VERIFICATION.md entry for actual test evidence.
+
+Remaining work: complete/restore Phases 02–04, embed tutoring inside the real lesson
+experience, feed authorized mastery/recommendation context, implement feedback
+permission checks, and persist reviewed drafts through a teacher-approved assessment
+publication flow. No Classroom/Teams integration is authorized. Earlier request
+and approval descriptions below are historical.
+
+## Current Phase 04 audit
+
+The current request authorizes deterministic concept mastery and recommendations,
+with verification of earlier phases first. AI tutoring and Classroom/Teams remain
+excluded. Earlier approval/status statements below are historical.
+
+The audit found Phase 01 source only: course metadata/enrollment APIs, basic
+module/lesson/concept schema, and account dashboard shells. Phase 02 delivery,
+resources and progress, and Phase 03 quizzes/results are absent. No assessment
+events exist for adaptive processing. A source-location/scope clarification is
+pending for these missing prerequisites; Phase 04 is not implemented.
+
+Dependency installation is now resolved. PostgreSQL 17.11 runs locally; the initial
+migration is applied to development/test databases, with no schema drift and nine
+passing relationship tests. The auth prerendering defect was fixed, critical
+Next.js/Vitest dependency findings addressed, and both lockfiles synchronized.
+See VERIFICATION.md for full results and outstanding release blockers.
+
+Remaining implementation order: establish the missing Phase 02 source, establish
+Phase 03 server grading and immutable concept evidence, then integrate the Phase 04
+contract in ADAPTIVE_ENGINE.md and verify workflows A-E. Do not begin AI/integrations.
+
 ## Phase 03 request — 2026-10-15
 
 Phase 03 quiz and assessment implementation is now explicitly authorized. This
@@ -40,8 +77,8 @@ explicit prerequisite that essential Phase 01 functionality be verified and repa
 | 01 — Database and authentication | Domain models, PostgreSQL/Prisma migration/seeds, credentials, sessions, roles/ownership, dashboard shells | Source written; lint and 13 policy tests pass; dependency install and live verification blocked |
 | 02 — Learning resources | Course management/publishing, ordered modules/lessons, lecture player/resources, persisted resume and explicit completion | Authorized; prerequisite recheck still finds missing packages/configuration/database. Local setup helper prepared; features not started |
 | 03 — Quiz and assessment engine | Concept-based quizzes, deterministic grading, feedback, attempt history; no mastery or AI | Authorized; blocked on missing Phase 02 implementation and unverified Phase 01 runtime |
-| 04 — Recommendations and AI | Deterministic recommendations, evaluated OpenAI assistance | Not authorized |
-| 05 — Education integrations | Authorized Classroom and Teams imports | Not authorized |
+| 04 — Adaptive learning | Deterministic concept mastery, recommendations, personalized dashboard; no AI | Authorized by the current request; blocked on missing prerequisite implementations |
+| 05 — Fully local AI | Ollama/Qwen3 provider, grounded tutor, teacher practice drafts, adaptive explanations | Authorized; partial integration, missing learning/assessment/adaptive prerequisites |
 | 06 — Pilot and operations | Accessibility, verification/recovery, deployment, monitoring, feedback | Not authorized |
 
 Before calling Phase 01 verified, install dependencies and synchronize lockfiles,

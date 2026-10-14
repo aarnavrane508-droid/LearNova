@@ -3,10 +3,44 @@
 ## Active scope and modules
 
 Phase 00 established the Next.js foundation. Phase 01 adds PostgreSQL and
-authentication source. Live verification is blocked; this is not a production-ready
-release. Phase 02 course/player/progress work is authorized, but the user requires
-essential Phase 01 verification first. Quizzes, mastery, AI, and LMS imports remain
-outside the authorized scope.
+authentication. The Phase 04 audit installed missing dependencies, provisioned local
+PostgreSQL 17.11, applied the initial migration to development and test databases,
+and verified all nine existing database tests with no Prisma schema drift.
+Phase 04 deterministic adaptation and Phase 05 local Ollama AI are authorized;
+cloud AI and LMS imports are not.
+The actual checkout lacks Phase 02 delivery/progress and Phase 03 assessment code.
+See VERIFICATION.md for current results and ADAPTIVE_ENGINE.md for the unimplemented
+adaptive contract. This is not a production-ready release.
+
+## Phase 05 local AI
+
+`src/server/ai` defines a typed server-only provider implemented with Ollama's
+native local API. It supports chat, streaming, explanations, summarization,
+validated structured output and model availability. Configuration accepts only
+literal loopback addresses and the evaluated qwen3:1.7b model; redirects/cloud tags
+are rejected. There is no cloud fallback or new AI SDK dependency.
+
+Authenticated `/api/local-ai/status`, `/api/local-ai/tutor` and
+`/api/local-ai/practice-drafts` routes enforce current roles, origin checks on
+mutations, strict input schemas, bounded bodies, per-user quotas and one inference
+per process. Retrieval scopes lesson queries to published enrolled student courses
+or the current teacher's ownership. It reads at most three mapped concept notes;
+the schema still has no lesson body, assessment result or mastery state. AI services
+do not write learning records. No database migrations were needed for this phase.
+
+Student/teacher dashboard links lead to separate tutor/draft views. Tutor responses
+stream as plain text with bounded page-session history, cancellation, retry and
+honest missing-context states. Source names come from authorized database records.
+Teacher questions are schema/semantic-validated ephemeral review drafts and are
+never published. The lesson player, review/publish workflow and adaptive-personalized
+explanations remain blocked by absent Phases 02–04. Notes/model output are untrusted;
+the model has no tools, network actions, authorization authority or grading writes.
+Prompt adherence and educational accuracy are not guaranteed by these boundaries.
+
+Ollama runs as a local CPU process with cloud features disabled, one loaded model
+and a 4096-token context. In-memory quotas/concurrency are appropriate only for this
+single-instance setup. See LOCAL_AI.md for hardware, setup, limits and licenses;
+VERIFICATION.md distinguishes mocked transport tests from actual inference evidence.
 
 Application routes remain in src/app. Shared UI and layout stay in src/components.
 The landing feature remains public. src/features/auth contains forms, the client,
@@ -24,7 +58,7 @@ checks; services never accept caller-supplied authorization identities.
 
 ## Versions and compatibility
 
-Retain Next.js 16.2.10, React 19.2.8, TypeScript 5.9.3, and Tailwind 4.3.2. Add
+Use Next.js/eslint-config-next 16.4.1, React 19.2.8, TypeScript 5.9.3, and Tailwind 4.3.2. Use
 Prisma/client/adapter-pg 7.9.0, pg 8.20.0, and Better Auth 1.7.7. Node >=22.12 and
 ESM are used. Prisma 7 uses a driver adapter, explicit generated output, and
 prisma.config.ts. CLI configuration loads .env.local; generation does not require
@@ -36,9 +70,13 @@ establishes declared compatibility, not runtime success. The user authorized a
 maintained compatible authentication library; Better Auth replaces the previously
 researched Auth.js beta decision.
 
-New packages cannot be downloaded in this sandbox. Root package-lock.json still
-records Phase 00. Successful npm install must synchronize it before npm ci. Do not
-bypass peer conflicts or fabricate package/type declarations to make checks pass.
+Dependencies are installed and both root/test lockfiles now reflect real installs.
+Vitest is pinned to 4.1.11 and Playwright to 1.61.1. Compatible Next.js/Vitest updates
+addressed reported critical vulnerabilities; compatible transitive updates were
+applied without force or peer-conflict bypasses. Twelve root audit findings remain
+(eleven high, one moderate); the test package audit is clear. Runtime-only audit
+still reports seven findings through Prisma's dependency graph. Do not interpret
+successful tests as a clean dependency security audit.
 
 Sources:
 - [Tagged Better Auth package](https://github.com/better-auth/better-auth/blob/v1.7.7/packages/better-auth/package.json)
@@ -99,9 +137,11 @@ student-only enrollment, and role changes that preserve those relationships.
 Course owners and mapped concepts use restrictive deletion; course structure and
 enrollment records cascade. Custom checks/triggers live in migration history.
 
-The initial migration is manually authored and has not been executed or schema-diff
-validated. Validate it on PostgreSQL before relying on it. Do not edit an applied
-migration or use db push as a replacement for migration history.
+The manually authored initial migration was applied to local coolearn_dev and
+coolearn_test databases during the Phase 04 audit. Migration status is current and
+Prisma migrate diff reports no difference from the schema. Nine real PostgreSQL
+relationship tests pass, including triggers, uniqueness, foreign keys, and cascades.
+Do not edit this applied migration or replace migration history with db push.
 
 ## UI, tests, and later boundaries
 
@@ -110,11 +150,14 @@ accessible labels, responsive forms, focus/pending/error states, and the public
 landing page. Dashboard shells display real account identity while upcoming
 learning features remain clearly labeled.
 
-Thirteen dependency-free Node policy tests and lint can run with existing tooling.
-Typecheck/build need new packages and client generation. Vitest and Playwright
-remain in the separate test package. Real relationship and auth browser tests use
+Thirteen dependency-free Node policy tests, five Vitest unit tests, lint, TypeScript,
+and the production build pass. Auth reads request headers before initializing its
+runtime configuration, preventing prerendering from requiring secrets. Regression
+tests cover that ordering, missing sessions, and current database roles. Vitest and
+Playwright remain in the separate test package. Relationship and auth browser tests use
 a dedicated local PostgreSQL database ending in _test, never another technology
 or a fake auth provider. See SETUP.md and VERIFICATION.md for safeguards/results.
 
-Future OpenAI and classroom services remain server-side adapters with consent,
-ownership, evaluated output, and cost controls. None is implemented in Phase 01.
+Cloud AI and classroom integrations remain outside this phase. Local AI never
+falls back to an external provider. Imported materials, if authorized in a future
+phase, must retain ownership boundaries and be treated as untrusted input.

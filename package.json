@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "engines": { "node": ">=22.12.0" },
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && next build",
@@ -12,6 +14,7 @@
     "typecheck": "tsc --noEmit",
     "check": "npm run lint && npm run typecheck",
     "smoke": "node scripts/http-smoke.mjs",
+    "ai:smoke": "node --conditions=react-server --import tsx scripts/local-ai-smoke.ts",
     "test": "npm --prefix tests run test",
     "test:watch": "npm --prefix tests run test:watch",
     "test:e2e": "npm --prefix tests run test:e2e",
@@ -27,20 +30,20 @@
     "test:db": "npm --prefix tests run test:db"
   },
   "dependencies": {
+    "@base-ui/react": "1.6.0",
     "@prisma/adapter-pg": "7.9.0",
     "@prisma/client": "7.9.0",
-    "@base-ui/react": "1.6.0",
-    "class-variance-authority": "0.7.1",
     "better-auth": "1.7.7",
-    "dotenv": "16.6.1",
+    "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
+    "dotenv": "16.6.1",
     "lucide-react": "1.23.0",
-    "next": "16.2.10",
+    "next": "16.4.1",
     "pg": "8.20.0",
     "react": "19.2.8",
     "react-dom": "19.2.8",
-    "tailwind-merge": "3.5.0",
     "server-only": "0.0.1",
+    "tailwind-merge": "3.5.0",
     "zod": "4.4.3"
   },
   "devDependencies": {
@@ -50,11 +53,11 @@
     "@types/react": "19.2.17",
     "@types/react-dom": "19.2.3",
     "eslint": "9.39.4",
-    "eslint-config-next": "16.2.10",
+    "eslint-config-next": "16.4.1",
     "prisma": "7.9.0",
     "tailwindcss": "4.3.2",
+    "tsx": "4.23.1",
     "tw-animate-css": "1.4.0",
-    "typescript": "5.9.3",
-    "tsx": "4.23.1"
+    "typescript": "5.9.3"
   }
 }

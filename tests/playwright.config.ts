@@ -18,7 +18,7 @@ export default defineConfig({
   testDir: "./e2e",
   fullyParallel: true,
   workers: runAuth ? 1 : undefined,
-  testIgnore: runAuth ? [] : ["**/auth.spec.ts"],
+  testIgnore: runAuth ? [] : ["**/auth.spec.ts", "**/local-ai.spec.ts"],
   forbidOnly: Boolean(process.env.CI),
   retries: process.env.CI ? 2 : 0,
   reporter: process.env.CI ? "github" : "list",
@@ -38,6 +38,7 @@ export default defineConfig({
       BETTER_AUTH_URL: "http://127.0.0.1:3100",
       BETTER_AUTH_SECRET: randomBytes(48).toString("base64url"),
       ALLOW_LOCAL_HTTP_AUTH: "true",
+      LOCAL_AI_ENABLED: process.env.RUN_LOCAL_AI_E2E === "true" ? "true" : "false",
     } : undefined,
   },
 });

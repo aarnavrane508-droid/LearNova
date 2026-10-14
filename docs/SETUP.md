@@ -1,5 +1,34 @@
 # Local PostgreSQL and authentication setup
 
+## Current workspace after the Phase 04 audit
+
+The earlier missing-package and database blockers below have been resolved in this
+workspace. Root/test dependencies and Chromium are installed; both lockfiles are
+synchronized. PostgreSQL 17.11 runs on 127.0.0.1:5432 with separate coolearn_dev and
+coolearn_test databases, both migrated. Random credentials are stored only in ignored
+.env.local. Do not print or commit that file. No development users were seeded.
+
+Run `npm.cmd run dev` and open http://localhost:3000/register to create an account.
+Only the implemented foundation/account features are available; Phase 02/03/04
+learning workflows are absent. See VERIFICATION.md for test evidence.
+
+This audit used official EDB PostgreSQL binaries rather than a Windows service.
+If the machine restarts, start the existing database from the project directory:
+
+```powershell
+& .\.verification\postgres\runtime\pgsql\bin\pg_ctl.exe -D .\.verification\postgres\data -l .\.verification\postgres\server.log -o "-h 127.0.0.1 -p 5432" -w start
+```
+
+Stop it with the same executable and `-D .\.verification\postgres\data -m fast -w stop`.
+Do not delete .verification/postgres/data: it contains this local database. This is
+development infrastructure, not a production service or backup strategy. Other
+machines should use the Docker/existing-PostgreSQL procedure below and `npm.cmd ci`
+plus `npm.cmd --prefix tests ci` with the updated lockfiles.
+
+The prior sandbox-specific failure descriptions below are historical. Approved
+outside-sandbox commands worked during this audit; the sandbox execution helper
+itself still failed before starting PowerShell.
+
 ## Automated local setup on Windows
 
 Install and start [Docker Desktop](https://docs.docker.com/desktop/setup/install/windows-install/),

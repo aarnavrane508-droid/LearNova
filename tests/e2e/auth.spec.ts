@@ -92,7 +92,7 @@ test("login handles invalid credentials, role boundaries, and logout", async ({ 
   await page.getByLabel("Email address").fill(email("student"));
   await page.getByLabel("Password", { exact: true }).fill("incorrect-password");
   await page.getByRole("button", { name: "Log in", exact: true }).click();
-  await expect(page.getByRole("alert")).toContainText("couldn’t sign you in");
+  await expect(page.getByRole("region", { name: "Welcome back." }).getByRole("alert")).toContainText("couldn’t sign you in");
   await page.getByLabel("Password", { exact: true }).fill(password);
   await page.getByRole("button", { name: "Log in", exact: true }).click();
   await expect(page).toHaveURL(/\/dashboard\/student$/);

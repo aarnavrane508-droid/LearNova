@@ -1,4 +1,185 @@
-# Verification — 2026-10-14
+# Verification — updated 2026-10-15
+
+## Phase 05 local AI verification — 2026-10-15
+
+**Overall: PARTIAL. Real local tutoring and draft generation passed; the complete
+learning/assessment/adaptive workflow is BLOCKED by missing Phases 02–04 source.**
+The earlier audit below remains applicable. No assessment pipeline, mastery state,
+lesson player/progress, or teacher question approval/publication workflow exists in
+this checkout. AI retrieves bounded, authorized lesson-linked concept descriptions;
+it cannot consume missing lesson bodies or mastery records. No database schema or
+migration changes were needed for Phase 05. Development accounts/materials were not
+seeded; browser fixtures were synthetic records in the separate test database.
+
+### Actual local runtime
+
+- Windows 11 Home, Intel i5-1135G7 (4 cores/8 threads), about 7.68 GiB usable RAM.
+  Integrated Iris Xe; no dedicated GPU assumed. About 1.2 GiB RAM was initially
+  free. Stopping the development server freed memory during CPU inference testing.
+- Ollama 0.40.4 portable CPU runtime installed under ignored `.verification/ollama`.
+  The official Windows installer download stalled; the official standalone archive's
+  CPU runtime was extracted with ZIP CRC validation and a valid executable signature.
+  It is not a system service or PATH installation. See LOCAL_AI.md for setup details.
+- Only `qwen3:1.7b` was downloaded (1.4 GB, digest prefix `8f68893c685c`). Pull digest
+  verification succeeded. Server binds `127.0.0.1:11434`, cloud disabled.
+- `npm.cmd run ai:smoke`: PASS with actual provider chat "Two plus two is four."
+  and schema-validated `{"answer":"4"}`, 4,907 ms combined. No mocked transport.
+  `ollama ps` reported 1.9 GB, 100% CPU and a 4096-token context.
+- Internet-disabled operation was NOT tested. These timings are small probes,
+  not a throughput benchmark or a guarantee under memory pressure.
+
+### Executed browser and integration checks
+
+| Command / configuration | Observed result |
+| --- | --- |
+| `npm.cmd run check` | PASS, ESLint zero warnings and strict TypeScript, final source |
+| `npm.cmd test` | PASS, 43 tests across 5 files, including oversized/missing JSON bodies |
+| `npm.cmd run build` | PASS, Prisma generation and optimized Next.js build, final source |
+| `npm.cmd run test:policies` | PASS, 13 tests |
+| `npm.cmd run test:db` | PASS, 9 tests against PostgreSQL |
+| `RUN_AUTH_E2E=true`, `RUN_LOCAL_AI_E2E=false`, `npm.cmd run test:e2e` | PASS, 39 passed, 5 skipped; disabled AI tested, inference cases intentionally skipped |
+| `RUN_AUTH_E2E=true`, `RUN_LOCAL_AI_E2E=true`, `npm.cmd --prefix tests run test:e2e -- local-ai.spec.ts` | PASS, 14 passed, 2 skipped; desktop and mobile Chromium, actual Ollama; disabled-AI cases skipped in this enabled run |
+
+Real-model browser cases authenticate users, select authorized lesson notes, stream
+a relevant explanation, and generate validated single-choice, multiple-select and
+short-answer drafts. Draft responses require review and are never published.
+Other cases cover unauthenticated requests, role/ownership/enrollment isolation,
+origin rejection, client-injected mastery fields, empty accounts and missing context.
+Unit provider tests use mocked transport for malformed output, timeout, cancellation,
+bounded streaming, configuration, quotas and concurrency; those do not prove inference.
+
+Initial failures were retained as evidence: a lesson selector lacked a reliable
+accessible name (fixed with an explicit label); the first real teacher draft had
+multiple/out-of-range keys for a single-choice question and was correctly rejected.
+Generation JSON schemas now constrain question type, option/key counts, index range,
+difficulty and actual concept IDs. Independent semantic validation remains, with
+regression coverage. The final real-model rerun above passed all three question types.
+
+### Workflow verdicts and remaining work
+
+- Authentication: PASS for existing tested flows; see foundation results below.
+- Course management: PARTIAL; existing metadata/enrollment authorization verified,
+  but module/content authoring and publication workflow are absent.
+- Lesson playback/progress, quizzes/results, adaptive recommendations: BLOCKED;
+  their production implementations are absent, so no regression success is claimed.
+- Local tutor: PASS for authorized concept-note context; PARTIAL for the requested
+  in-player, assessment-feedback and mastery-aware experience.
+- Teacher generation: PASS for real validated drafts of all three types; PARTIAL
+  for persisted teacher review and assessment publication, which are absent.
+- Security: application permissions are outside model control; no AI database writes,
+  tools, external provider fallback or public Ollama access. Model instruction adherence
+  and factual correctness are not guaranteed. In-memory quotas require a shared store
+  before multi-instance deployment. Existing dependency audit findings remain below.
+
+See LOCAL_AI.md for exact environment/start commands and deployment limitations.
+
+## Current Phase 04 audit — 2026-10-15
+
+**Overall verdict: BLOCKED for Phase 04; existing foundation verified as below.**
+These results supersede the historical missing-package/database statements below.
+The initial working tree was clean. Read AGENTS.md and all existing docs, inspected
+scripts, routes, auth/services, schema/migration, dashboard, and tests. Only main
+and origin/main are available locally. No new remote fetch was performed this turn.
+
+Actual source lacks Phase 02 authoring/player/resources/progress and Phase 03
+quiz/question/attempt/result code. Lesson has title/order/kind and concept mappings,
+but no delivered lesson content or completion state. Course APIs handle metadata
+and enrollment, not module authoring or publication. No assessment event or
+question-concept mapping exists for Phase 04. Requested the source location or
+confirmation of the missing-phase implementation scope. No adaptive implementation
+or migration was added. ADAPTIVE_ENGINE.md is a proposed contract, not shipped code.
+
+### Repairs and environment
+
+- Sandbox execution failed before PowerShell with `helper_unknown_error: setup
+  refresh had errors`; approved outside-sandbox commands worked.
+- Installed root and separate test dependencies and synchronized both lockfiles.
+- Upgraded pinned Next.js/eslint-config-next to 16.4.1 and Vitest to 4.1.11 after
+  checking official releases/registry peer dependencies. No force/legacy-peer-deps.
+- Applied compatible transitive fixes with npm audit fix; remaining findings are
+  recorded below rather than applying proposed breaking downgrades.
+- Fixed auth initialization ordering: await request headers before initializing
+  auth/database configuration. Previously production prerendering failed without
+  auth secrets; build now passes without requiring them during prerendering.
+- Added three unit regressions for request-time initialization, missing sessions,
+  and re-reading database roles instead of trusting stale session roles.
+- Downloaded PostgreSQL 17.11 from the official EDB binary link. The first download
+  timed out after 180 seconds; resumed successfully. Extracted runtime files into
+  ignored .verification/postgres/runtime, initialized a loopback-only instance with
+  SCRAM authentication and generated private credentials, and created separate
+  coolearn_dev/coolearn_test databases. Secrets remain only in ignored .env.local.
+- Applied the existing migration to both databases. No schema changes or new
+  migrations. No development seed ran; browser fixtures were created/cleaned in test.
+- Installed real Chromium and headless binaries. First browser attempt ran before
+  headless installation finished: 8 launch failures, 20 not run. After installation,
+  the suite exposed a strict-locator collision between the login error and Next's
+  route announcer: 13 passed, 2 failed, 1 skipped, 12 not run. Scoped the login alert
+  assertion to the form region; the complete rerun passed as recorded below.
+
+### Executed commands and final results
+
+| Command | Result |
+| --- | --- |
+| npm.cmd install --fetch-retries=0 --fetch-timeout=15000 | PASS; installed missing root packages |
+| npm.cmd run test:install -- --fetch-retries=0 --fetch-timeout=15000 | PASS; installed harness and created test lockfile |
+| npm.cmd install --save-exact next@16.4.1 eslint-config-next@16.4.1 | PASS |
+| npm.cmd --prefix tests install --save-dev --save-exact vitest@4.1.11 | PASS; test dependency audit reports zero vulnerabilities |
+| npm.cmd audit fix | PARTIAL; compatible fixes applied, exit 1 for 12 remaining findings (11 high, 1 moderate) |
+| npm.cmd audit --omit=dev | FAIL; 7 remaining findings (6 high, 1 moderate) through Prisma's dependency graph |
+| npm.cmd run db:validate | PASS |
+| npm.cmd run db:generate | PASS |
+| npm.cmd run db:migrate | PASS; initial migration applied to coolearn_dev |
+| npm.cmd run db:test:prepare | PASS; initial migration applied to coolearn_test |
+| npm.cmd exec prisma migrate status | PASS; up to date |
+| npm.cmd exec prisma migrate diff -- --from-config-datasource --to-schema prisma/schema.prisma --exit-code | PASS; no difference detected |
+| npm.cmd run check | PASS; ESLint zero warnings and strict TypeScript |
+| npm.cmd run test:policies | PASS; 13/13 |
+| npm.cmd test | PASS; 5/5 across two files |
+| npm.cmd run test:db | PASS; 9/9 against actual PostgreSQL |
+| npm.cmd run build | PASS; production build, including dynamic authenticated routes |
+| npm.cmd --prefix tests run browsers:install | PASS; Chromium/FFmpeg/headless shell installed |
+| $env:RUN_AUTH_E2E='true'; npm.cmd run test:e2e | PASS; 27 passed, 1 intentionally skipped desktop execution of mobile-only navigation test; includes production rebuild |
+| git -c safe.directory=D:/Coolearn/adaptive-learning diff --check | PASS |
+
+Initial baseline before installation: lint and 13 policy tests passed; TypeScript
+failed with missing modules/client and resulting implicit types; unit/integration/
+browser commands and build could not find executables. After installation, the
+first integration run rejected missing TEST_DATABASE_URL and the first production
+build exposed auth prerender initialization. All those blockers were resolved as
+described above. No successful check is inferred from an earlier report.
+
+### Workflow verdicts and coverage limits
+
+| Workflow | Verdict | Evidence / missing work |
+| --- | --- | --- |
+| A Authentication | PASS | Real Chromium desktop/mobile registration, password hash verification, login, account dashboard, logout, protected-page rejection, forged/expired sessions |
+| B Course management | PARTIAL | Teacher ownership denial and DB relationship constraints pass; full course/module/lesson/resource authoring and publication UI absent |
+| C Student learning | PARTIAL | Actual HTTP enrollment/read/revoke flow and enrollment isolation pass; player, completion, resume/progress persistence absent |
+| D Assessment | BLOCKED | No quiz engine, server grading, attempt/result or question-concept models |
+| E Adaptive learning | BLOCKED | No mastery states/evidence, recommendations, prerequisites or personalized learning dashboard |
+
+Security browser checks cover public ADMIN/verified-status rejection, current-role
+dashboard boundaries, private profiles even against admins, another teacher's
+course writes, caller-supplied enrollment identities, draft enrollment denial,
+duplicate enrollment, expired/forged sessions, rate limits, and cross-origin writes.
+Database tests cover profile/enrollment/mapping uniqueness, FK failures, role
+triggers, ordering, restrictive deletion and cascades. Unit auth tests use mocks
+only to isolate control flow; the browser/database claims use real services.
+
+Not tested or implemented: simultaneous quiz submissions, answer-key confidentiality,
+mastery edge cases/replay, prerequisite cycles/order, private progress/recommendations,
+broken lesson media, adaptive empty states, network/API outage recovery and partial
+assessment transactions. No external integration success is claimed. Browser
+responsive navigation passes, but a full accessibility/manual visual audit remains.
+
+Remaining root advisories involve braces/micromatch/fast-glob/Next lint tooling,
+deepmerge-ts/@prisma/config, find-my-way/@prisma/dev, mysql2, and valibot. npm proposes
+breaking Prisma/Next lint downgrades; these were not applied. A separate compatible
+upstream-resolution review is required before release. Runtime-only audit still
+includes Prisma packages; they must not be dismissed merely as development tools.
+
+See SETUP.md for running the configured app and restarting local PostgreSQL, and
+RELEASE_CHECKLIST.md for the unfulfilled production and phase requirements.
 
 ## Phase 03 preflight — 2026-10-15
 
