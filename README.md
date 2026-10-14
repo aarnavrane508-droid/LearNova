@@ -58,6 +58,15 @@ profiles, enrollment boundaries, and cross-origin requests. Use a separate migra
 local database ending in _test for database/browser auth tests. See docs/SETUP.md.
 Do not claim these passed unless they actually ran. See docs/VERIFICATION.md.
 
+## Push to GitHub
+
+To push the committed source from your own network-enabled Windows terminal, run
+`scripts\push-github.cmd`. It verifies the remote, requires a clean working tree,
+guides GitHub login when needed, checks the exact aarnavrane508-droid account and
+repository write access, then pushes main using only GitHub CLI credentials. It
+does not use the connected tre1eg plugin or change global Git settings. The helper
+refuses to run inside a session marked CODEX_SANDBOX_NETWORK_DISABLED=1.
+
 ## Project documentation
 
 - [Product vision and future MVP](docs/PRODUCT.md)

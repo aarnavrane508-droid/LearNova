@@ -31,6 +31,12 @@ fails. The push was attempted using only the local CLI credentials and failed:
 Git could not connect to github.com:443. No source was published. The changes are
 committed locally; tre1eg was not used for writes.
 
+The subsequent push troubleshooting added scripts/push-github.cmd and README
+instructions. The helper requires the exact aarnavrane508-droid account and verified
+repository write permission before attempting a non-force push with CLI credentials.
+Its restricted-session guard was exercised successfully; network login and actual
+publishing cannot be tested in this sandbox and are not reported as successful.
+
 ## Phase 01: current results
 
 Phase 01 source is written but **not fully verified**. Historical Phase 00 successes
